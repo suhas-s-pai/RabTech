@@ -1,0 +1,18 @@
+# Target directories
+target/
+**/target/
+
+# Class files
+*.class
+
+# IDE and Editor files
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# OS generated files
+Thumbs.db
+.DS_Store
