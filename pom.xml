@@ -15,6 +15,7 @@
     <modules>
         <module>order-domain</module>
         <module>order-infrastructure</module>
+        <module>task-03-core-java</module>
     </modules>
 
     <properties>

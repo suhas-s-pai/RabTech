@@ -1,3 +1,9 @@
+# RabTech Academy Multi-Module System
+
+A production-grade Java 17 multi-module repository containing RabTech Academy Task 02 (DDD Order Management System) and Task 03 (Core Java OOP, Collections & Exception Hierarchy).
+
+---
+
 # RabTech Order Management System - Task 02
 
 A pure Java 17 Domain-Driven Design (DDD) and Hexagonal Architecture implementation for RabTech Academy Task 02.
@@ -14,15 +20,15 @@ The project is organized as a multi-module Maven project to physically separate 
 
 ```
 OrderManagement/
-├── pom.xml                        # Parent POM
-├── README.md                      # Project documentation
+├── pom.xml                        # Parent POM (Modules: order-domain, order-infrastructure, task-03-core-java)
+├── README.md                      # Comprehensive project documentation
 ├── .gitignore                     # Git ignore rules
 ├── mvnw / mvnw.cmd                # Maven Wrapper scripts
 ├── adrs/                          # Architectural Decision Records
 │   ├── 0001-pure-domain-hexagonal-architecture.md
 │   ├── 0002-order-aggregate-state-machine-and-events.md
 │   └── 0003-multi-module-maven-project-structure.md
-├── order-domain/                  # Pure Domain Module
+├── order-domain/                  # Pure Domain Module (Task 02)
 │   └── src/
 │       ├── main/java/com/rabtech/order/domain/
 │       │   ├── model/             # Order, OrderId, OrderItem, OrderStatus
@@ -30,18 +36,27 @@ OrderManagement/
 │       │   └── port/              # Ports (OrderRepository, NotificationPort, TimePort)
 │       └── test/java/com/rabtech/order/domain/
 │           └── model/             # Comprehensive JUnit 5 Domain Tests
-└── order-infrastructure/          # Infrastructure Module
+├── order-infrastructure/          # Infrastructure Module (Task 02)
+│   └── src/
+│       ├── main/java/com/rabtech/order/infrastructure/
+│       │   ├── adapter/           # In-Memory Adapters (InMemoryOrderRepository, etc.)
+│       │   └── Main.java          # Demo Executable Application
+│       └── test/java/com/rabtech/order/infrastructure/
+│           └── adapter/           # JUnit 5 Adapter Tests
+└── task-03-core-java/             # Core Java OOP & Collections Module (Task 03)
     └── src/
-        ├── main/java/com/rabtech/order/infrastructure/
-        │   ├── adapter/           # In-Memory Adapters (InMemoryOrderRepository, etc.)
-        │   └── Main.java          # Demo Executable Application
-        └── test/java/com/rabtech/order/infrastructure/
-            └── adapter/           # JUnit 5 Adapter Tests
+        ├── main/java/com/rabtech/task03/
+        │   ├── model/             # Employee, Developer, Manager, Project record, EmployeeSummary record
+        │   ├── exception/         # Checked & Unchecked Custom Exception Hierarchy
+        │   └── service/           # EmployeeManagementEngine (Collections & Streams Engine)
+        └── test/java/com/rabtech/task03/
+            ├── model/             # EmployeeTest (OOP, Inheritance, Polymorphism, Validation)
+            └── service/           # EmployeeManagementEngineTest & StreamAndLambdaOperationsTest
 ```
 
 ---
 
-## Aggregate: Order
+## Aggregate: Order (Task 02)
 
 ### States & Allowed Transitions
 
@@ -63,7 +78,7 @@ OrderManagement/
 
 ---
 
-## Ports & In-Memory Adapters
+## Ports & In-Memory Adapters (Task 02)
 
 | Port (Interface) | In-Memory Adapter | Purpose |
 |---|---|---|
@@ -73,7 +88,7 @@ OrderManagement/
 
 ---
 
-## Domain Events
+## Domain Events (Task 02)
 
 - **`OrderConfirmed`**: Recorded when an order is confirmed.
 - **`PaymentRecorded`**: Recorded when payment is processed.
@@ -81,42 +96,88 @@ OrderManagement/
 
 ---
 
-## Prerequisites
+# RabTech Employee Management System - Task 03
 
-- **Java JDK 17** or higher
+A complete Java 17 Object-Oriented Programming (OOP), Collections Framework, Java Streams/Lambdas, and Custom Exception Hierarchy implementation for RabTech Academy Task 03.
+
+## Domain Model & OOP Concepts
+
+Task 03 demonstrates core Object-Oriented Programming (OOP) principles:
+
+- **Abstraction & Encapsulation**: Abstract base class [`Employee`](file:///e:/RabTech/OrderManagement/task-03-core-java/src/main/java/com/rabtech/task03/model/Employee.java) encapsulates private fields (`id`, `name`, `department`, `salary`) with strict validation rules in constructors and setters.
+- **Inheritance**: Subclasses [`Developer`](file:///e:/RabTech/OrderManagement/task-03-core-java/src/main/java/com/rabtech/task03/model/Developer.java) and [`Manager`](file:///e:/RabTech/OrderManagement/task-03-core-java/src/main/java/com/rabtech/task03/model/Manager.java) extend `Employee`, adding role-specific attributes (`programmingLanguage`, `teamSize`).
+- **Polymorphism**: The abstract methods `getRole()` and `calculateBonus()` are polymorphically implemented:
+  - `Developer`: `calculateBonus() = salary * 0.15`
+  - `Manager`: `calculateBonus() = salary * 0.20 + (teamSize * 500.0)`
+- **Java 17 Records**: Immutable value containers [`Project`](file:///e:/RabTech/OrderManagement/task-03-core-java/src/main/java/com/rabtech/task03/model/Project.java) (`id`, `name`, `clientName`) and [`EmployeeSummary`](file:///e:/RabTech/OrderManagement/task-03-core-java/src/main/java/com/rabtech/task03/model/EmployeeSummary.java).
 
 ---
 
-## How to Build & Run Tests
+## Collections Framework Integration
 
-### Using Maven Wrapper (Recommended)
+The [`EmployeeManagementEngine`](file:///e:/RabTech/OrderManagement/task-03-core-java/src/main/java/com/rabtech/task03/service/EmployeeManagementEngine.java) combines all three Java Collections types:
+
+- **`Map<String, Employee>`**: `LinkedHashMap` for fast $O(1)$ employee lookups by ID and guaranteeing ID uniqueness.
+- **`Set<Employee>`**: `HashSet` to maintain unique employee object references.
+- **`Set<Project>` per Employee**: `Map<String, Set<Project>>` to track assigned projects per employee and prevent duplicate project assignments.
+- **`List<Employee>`**: Returned for ordered stream query outputs.
+
+---
+
+## Streams & Lambdas Business Operations
+
+The engine implements advanced Java Streams and Functional Programming queries:
+
+1. **Department Filtering**: `filterByDepartment(String dept)`
+2. **Salary Threshold Filtering**: `filterByMinimumSalary(double minSalary)`
+3. **Salary Sorting**: `sortBySalary(boolean ascending)` using `Comparator.comparingDouble(Employee::getSalary)`
+4. **Name Sorting**: `sortByName()` using `Comparator.comparing(Employee::getName, String.CASE_INSENSITIVE_ORDER)`
+5. **Department Grouping**: `groupByDepartment()` using `Collectors.groupingBy(Employee::getDepartment)`
+6. **Role Counting**: `countByRole()` using `Collectors.groupingBy(Employee::getRole, Collectors.counting())`
+7. **Employee Summary**: `generateSummary()` utilizing `mapToDouble()` for total budget sum and average salary calculation.
+
+---
+
+## Custom Exception Hierarchy
+
+| Exception | Type | Inheritance | Usage Trigger |
+|---|---|---|---|
+| `EmployeeNotFoundException` | **CHECKED** | `java.lang.Exception` | Thrown when querying, removing, or assigning projects to an unrecorded employee ID |
+| `DuplicateEmployeeException` | **UNCHECKED** | `java.lang.RuntimeException` | Thrown when attempting to add an employee whose ID already exists |
+| `InvalidEmployeeException` | **UNCHECKED** | `java.lang.RuntimeException` | Thrown when employee attributes (ID, name, department, salary, project) fail validation rules |
+| `DuplicateAssignmentException` | **UNCHECKED** | `java.lang.RuntimeException` | Thrown when attempting to assign an employee to a project they are already assigned to |
+
+---
+
+## How to Build & Run All Tests
+
+### Prerequisites
+- **Java JDK 17** or higher
+
+### Run All Unit Tests Across All Modules (Task 02 + Task 03)
 
 ```bash
-# Run all unit tests across all modules
-./mvnw clean test        # Linux/macOS
-.\mvnw.cmd clean test    # Windows
+# Windows (PowerShell / CMD)
+.\mvnw.cmd clean test
+
+# Linux / macOS
+./mvnw clean test
 ```
 
-### Build and Package JARs
+### Build & Package JARs
 
 ```bash
 .\mvnw.cmd clean package
-```
-
-### Run the Demo Application (`Main`)
-
-```bash
-java -cp "order-infrastructure/target/classes;order-domain/target/classes" com.rabtech.order.infrastructure.Main
 ```
 
 ---
 
 ## Test Coverage Summary
 
-- **Total Unit Tests**: 29
-- **Domain Tests**: 23 tests (`OrderTest`, `OrderItemTest`, `OrderIdTest`)
-- **Infrastructure Tests**: 6 tests (`InMemoryOrderRepositoryTest`, `InMemoryNotificationAdapterTest`, `InMemoryTimeAdapterTest`)
-- **Pass Rate**: 100%
+- **Total Unit Tests Across Project**: **55 Tests** (100% Pass Rate)
+  - **Task 02 Domain Tests**: 23 tests
+  - **Task 02 Infrastructure Tests**: 6 tests
+  - **Task 03 Tests**: **26 tests** (`EmployeeTest`, `EmployeeManagementEngineTest`, `StreamAndLambdaOperationsTest`)
 
 ---
 
@@ -124,5 +185,5 @@ java -cp "order-infrastructure/target/classes;order-domain/target/classes" com.r
 
 Detailed ADRs explaining key design choices are located in the [`adrs/`](file:///e:/RabTech/OrderManagement/adrs) folder:
 - [ADR 0001: Pure Domain Model with Hexagonal Architecture](adrs/0001-pure-domain-hexagonal-architecture.md)
-- [ADR 0002: Order Aggregate State Machine and Domain Events](adrs/0002-order-aggregate-state-machine-and-domain-events.md)
+- [ADR 0002: Order Aggregate State Machine and Domain Events](adrs/0002-order-aggregate-state-machine-and-events.md)
 - [ADR 0003: Multi-Module Maven Project Structure](adrs/0003-multi-module-maven-project-structure.md)
