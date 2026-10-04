@@ -111,3 +111,4 @@ class AuthServiceTest {
         assertThat(response.getToken()).isEqualTo("mock.jwt.token");
     }
 }
+

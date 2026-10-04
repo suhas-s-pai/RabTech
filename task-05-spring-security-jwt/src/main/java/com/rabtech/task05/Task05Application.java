@@ -10,3 +10,4 @@ public class Task05Application {
         SpringApplication.run(Task05Application.class, args);
     }
 }
+

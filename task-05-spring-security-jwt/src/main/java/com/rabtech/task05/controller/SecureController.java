@@ -34,3 +34,4 @@ public class SecureController {
         return ResponseEntity.ok(response);
     }
 }
+

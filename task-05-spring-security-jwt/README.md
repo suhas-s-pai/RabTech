@@ -159,3 +159,4 @@ Header: `Authorization: Bearer <your_token>`
 2. **Stateless JWT Sessions**: `SessionCreationPolicy.STATELESS` ensures no HTTP sessions are created or persisted on the server.
 3. **Custom Authentication Entry Point & Access Denied Handler**: Unauthenticated (401) and Unauthorized (403) errors return structured JSON instead of HTML pages.
 4. **JWT Authentication Filter**: Intercepts every incoming request, validates the `Bearer <token>` header using `JwtService`, and populates `SecurityContextHolder`.
+

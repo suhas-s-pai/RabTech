@@ -37,3 +37,4 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         objectMapper.writeValue(response.getOutputStream(), body);
     }
 }
+

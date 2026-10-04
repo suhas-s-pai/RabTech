@@ -169,3 +169,4 @@ class SecurityIntegrationTest {
                 .andExpect(jsonPath("$.role").value("ADMIN"));
     }
 }
+
