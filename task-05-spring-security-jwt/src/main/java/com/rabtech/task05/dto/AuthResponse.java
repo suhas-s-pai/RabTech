@@ -1,0 +1,60 @@
+package com.rabtech.task05.dto;
+
+import com.rabtech.task05.entity.Role;
+
+public class AuthResponse {
+
+    private String token;
+    private String username;
+    private Role role;
+    private String message;
+
+    public AuthResponse() {
+    }
+
+    public AuthResponse(String token, String username, Role role, String message) {
+        this.token = token;
+        this.username = username;
+        this.role = role;
+        this.message = message;
+    }
+
+    public AuthResponse(String token, String username, Role role) {
+        this.token = token;
+        this.username = username;
+        this.role = role;
+        this.message = "Authentication successful";
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+}
