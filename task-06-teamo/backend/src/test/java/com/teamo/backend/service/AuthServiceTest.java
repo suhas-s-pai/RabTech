@@ -64,6 +64,7 @@ class AuthServiceTest {
                 "suhas@test.com", "$2a$10$hashedPassword", Collections.singletonList(new SimpleGrantedAuthority("ROLE_EMPLOYEE"))
         );
 
+        when(userRepository.findByEmailIgnoreCase("suhas@test.com")).thenReturn(Optional.empty());
         when(userRepository.findByEmail("suhas@test.com")).thenReturn(Optional.empty());
         when(passwordEncoder.encode("password123")).thenReturn("$2a$10$hashedPassword");
         when(userRepository.save(any(User.class))).thenReturn(savedUser);
@@ -85,6 +86,7 @@ class AuthServiceTest {
         RegisterRequest request = new RegisterRequest("Suhas", "suhas@test.com", "password123", Role.EMPLOYEE);
         User existing = new User("Suhas", "suhas@test.com", "pass", Role.EMPLOYEE);
 
+        when(userRepository.findByEmailIgnoreCase("suhas@test.com")).thenReturn(Optional.of(existing));
         when(userRepository.findByEmail("suhas@test.com")).thenReturn(Optional.of(existing));
 
         assertThatThrownBy(() -> authService.register(request))
@@ -105,6 +107,7 @@ class AuthServiceTest {
                 "suhas@test.com", "$2a$10$hashedPassword", Collections.singletonList(new SimpleGrantedAuthority("ROLE_EMPLOYEE"))
         );
 
+        when(userRepository.findByEmailIgnoreCase("suhas@test.com")).thenReturn(Optional.of(user));
         when(userRepository.findByEmail("suhas@test.com")).thenReturn(Optional.of(user));
         when(userDetailsService.loadUserByUsername("suhas@test.com")).thenReturn(userDetails);
         when(jwtService.generateToken(any())).thenReturn("mock.jwt.token");

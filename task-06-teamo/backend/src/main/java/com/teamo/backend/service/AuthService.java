@@ -38,13 +38,15 @@ public class AuthService {
     }
 
     public AuthResponse register(RegisterRequest request) {
-        if (userRepository.findByEmail(request.getEmail().toLowerCase()).isPresent()) {
+        String cleanEmail = request.getEmail().trim().toLowerCase();
+
+        if (userRepository.findByEmailIgnoreCase(cleanEmail).isPresent() || userRepository.findByEmail(cleanEmail).isPresent()) {
             throw new IllegalArgumentException("Email is already registered: " + request.getEmail());
         }
 
         User user = new User(
                 request.getName(),
-                request.getEmail().toLowerCase(),
+                cleanEmail,
                 passwordEncoder.encode(request.getPassword()),
                 request.getRole()
         );
@@ -57,15 +59,19 @@ public class AuthService {
     }
 
     public AuthResponse login(AuthRequest request) {
+        String cleanEmail = request.getEmail().trim().toLowerCase();
+
+        User user = userRepository.findByEmailIgnoreCase(cleanEmail)
+                .orElseGet(() -> userRepository.findByEmail(cleanEmail)
+                        .orElseGet(() -> userRepository.findByEmail(request.getEmail())
+                                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"))));
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail().toLowerCase(),
+                        user.getEmail(),
                         request.getPassword()
                 )
         );
-
-        User user = userRepository.findByEmail(request.getEmail().toLowerCase())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid email or password"));
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
         String token = jwtService.generateToken(userDetails);
