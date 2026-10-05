@@ -35,9 +35,10 @@ WORKDIR /app
 # Copy executable Spring Boot JAR from Stage 2
 COPY --from=backend-builder /app/backend/target/*.jar app.jar
 
-# Render exposes the PORT environment variable
+# Render environment defaults (production profile: postgres)
 ENV PORT=8080
+ENV SPRING_PROFILES_ACTIVE=postgres
 EXPOSE ${PORT}
 
-# Run the unified Spring Boot application with SPRING_PROFILES_ACTIVE support
-ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-default} -jar app.jar"]
+# Run the unified Spring Boot application with postgres profile enabled by default on Render
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:postgres} -jar app.jar"]
