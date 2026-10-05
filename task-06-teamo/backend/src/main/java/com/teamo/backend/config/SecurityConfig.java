@@ -55,6 +55,17 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/",
+                                "/index.html",
+                                "/assets/**",
+                                "/*.ico",
+                                "/*.png",
+                                "/*.svg",
+                                "/*.css",
+                                "/*.js",
+                                "/login",
+                                "/manager",
+                                "/employee",
                                 "/api/auth/**",
                                 "/h2-console/**",
                                 "/v3/api-docs/**",
@@ -63,7 +74,8 @@ public class SecurityConfig {
                         ).permitAll()
                         .requestMatchers("/api/tasks/manager/**").hasRole("MANAGER")
                         .requestMatchers("/api/tasks/employee/**").hasRole("EMPLOYEE")
-                        .anyRequest().authenticated()
+                        .requestMatchers("/api/**").authenticated()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
