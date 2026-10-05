@@ -48,4 +48,3 @@ public class AuthController {
         return ResponseEntity.ok(userService.getUserDtoByEmail(authentication.getName()));
     }
 }
-}

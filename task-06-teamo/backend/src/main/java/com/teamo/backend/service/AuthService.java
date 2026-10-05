@@ -73,4 +73,3 @@ public class AuthService {
         return new AuthResponse(token, UserDto.fromEntity(user), "Login successful");
     }
 }
-}

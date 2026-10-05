@@ -99,4 +99,3 @@ public class TaskController {
         return ResponseEntity.ok(taskService.requestChanges(id, request, authentication.getName()));
     }
 }
-}
