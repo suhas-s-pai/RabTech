@@ -42,3 +42,4 @@ EXPOSE ${PORT}
 
 # Run the unified Spring Boot application with postgres profile enabled by default on Render
 ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:postgres} -jar app.jar"]
+
