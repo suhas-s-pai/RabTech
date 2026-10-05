@@ -40,4 +40,3 @@ public class UserService {
         return UserDto.fromEntity(getUserByEmail(email));
     }
 }
-}
