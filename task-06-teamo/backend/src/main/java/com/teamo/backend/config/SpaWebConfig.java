@@ -35,3 +35,4 @@ public class SpaWebConfig implements WebMvcConfigurer {
                 });
     }
 }
+

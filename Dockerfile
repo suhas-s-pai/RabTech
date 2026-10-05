@@ -39,5 +39,5 @@ COPY --from=backend-builder /app/backend/target/*.jar app.jar
 ENV PORT=8080
 EXPOSE ${PORT}
 
-# Run the unified Spring Boot application
-ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -jar app.jar"]
+# Run the unified Spring Boot application with SPRING_PROFILES_ACTIVE support
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT} -Dspring.profiles.active=${SPRING_PROFILES_ACTIVE:-default} -jar app.jar"]
